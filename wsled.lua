@@ -1,60 +1,44 @@
 local config = require('config')
+local wsled = require('wsled_config')
 
-direction = 1
-pos = 0
-
-speed = 300
-colorR = 200
-colorG = 200
-colorB = 200
-length = 4
-
-mode = 2
-
-signal_red = 0
-signal_red_change = 10
 
 local MAX_LENGTH = 50
 
 local function writeColorValues()
-    if speed < 20 then
-        speed = 20
+    if wsled.length > MAX_LENGTH then
+        wsled.length = MAX_LENGTH
     end
-    if length > MAX_LENGTH then
-        length = MAX_LENGTH
+    if wsled.length <= 0 then
+        wsled.length = 1
     end
-    if length <= 0 then
-        length = 1
-    end
-    color_stripe = string.char(colorB, colorR, colorG):rep(length)
+    color_stripe = string.char(wsled.colorB, wsled.colorR, wsled.colorG):rep(wsled.length)
     --color_stripe = ""
     --for i = 0, length-1 do
     --    color_stripe = color_stripe .. string.char(colorB/(i+0), colorR/(i+1), colorG/(i+1))
     --end
 
-    top = string.char(0,0,0):rep(length)
-    if mode == 2 then
-        signal_red = signal_red + signal_red_change
-        if signal_red >= 255 then
-            signal_red_change = signal_red_change * -1
-            signal_red = 255
+    top = string.char(0,0,0):rep(wsled.length)
+    if wsled.mode == 2 then
+        wsled.signal_red = wsled.signal_red + wsled.signal_red_change
+        if wsled.signal_red >= 255 then
+            wsled.signal_red_change = wsled.signal_red_change * -1
+            wsled.signal_red = 255
         end
-        if signal_red <= 0 then
-            signal_red_change = signal_red_change * -1
-            signal_red = 0
+        if wsled.signal_red <= 0 then
+            wsled.signal_red_change = wsled.signal_red_change * -1
+            wsled.signal_red = 0
         end
-        top = string.char(0, signal_red, 0):rep(length)
+        top = string.char(0, wsled.signal_red, 0):rep(wsled.length)
     end
 
-    ws2812.write(config.PIN_LEDSTRIP, string.char(0,0,0):rep(pos) .. color_stripe .. string.char(0,0,0):rep(config.LED_STRIP_LENGTH-length-pos-length) .. top)
+    ws2812.write(config.PIN_LEDSTRIP, string.char(0,0,0):rep(wsled.pos) .. color_stripe .. string.char(0,0,0):rep(config.LED_STRIP_LENGTH-wsled.length-wsled.pos-wsled.length) .. top)
 
-    pos = pos + direction
-    if pos >= config.LED_STRIP_LENGTH then
-        direction = -1
-    elseif pos <= 0 then
-        direction = 1
+    wsled.pos = wsled.pos + wsled.direction
+    if wsled.pos >= config.LED_STRIP_LENGTH then
+        wsled.direction = -1
+    elseif wsled.pos <= 0 then
+        wsled.direction = 1
     end
 end
 
-return {writeColorValues = writeColorValues,
-    speed = 300}
+return {writeColorValues = writeColorValues}

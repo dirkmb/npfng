@@ -1,10 +1,10 @@
-local config = require('config')
-
+config = require('config')
 wsled = require('wsled')
+wsled_config = require('wsled_config')
 
 function led_func_timer()
     wsled.writeColorValues()
-    tmr.alarm(2, wsled.speed, 0, led_func_timer)
+    tmr.alarm(2, wsled_config.speed, 0, led_func_timer)
 end
 
 function startServer()
@@ -37,7 +37,7 @@ end
 
 
 local function start()
-    tmr.alarm(2, wsled.speed, 0, led_func_timer)
+    tmr.alarm(2, wsled_config.speed, 0, led_func_timer)
     startServer()
 end
 

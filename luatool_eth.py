@@ -88,7 +88,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--port',    default='8080',         help='Port of the Telnet Server.')
     parser.add_argument('-f', '--src',     default='main.lua',     help='Source file on computer, default main.lua')
     parser.add_argument('-t', '--dest',    default=None,           help='Destination file on MCU, default to source file name')
-    parser.add_argument('-h', '--host',    default=None,           help='IP Address of the telnet server')
+    parser.add_argument('-H', '--host',    default=None,           help='IP Address of the telnet server')
     parser.add_argument('-c', '--compile', action='store_true',    help='Compile lua to lc after upload')
     parser.add_argument('-r', '--restart', action='store_true',    help='Restart MCU after upload')
     parser.add_argument('-d', '--dofile',  action='store_true',    help='Run the Lua script after upload')

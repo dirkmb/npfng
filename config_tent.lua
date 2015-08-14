@@ -6,12 +6,9 @@ return {
     WIFI_SSID = 'Camp2015-open-legacy',
     WIFI_KEY = '',
 
-    LED_STRIP_LENGTH = 600,
+    LED_STRIP_LENGTH = 596,
 
     PLUGINS = {
-        -- 'dht_reader',
-        --'wsledtest',
-        -- 'dht_test',
         'ledserver',
     },
 

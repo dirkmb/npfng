@@ -7,12 +7,11 @@ return {
     WIFI_KEY = '',
 
     --LED_STRIP_LENGTH = 596,
-    LED_STRIP_LENGTH = 300,
+    LED_STRIP_LENGTH = 597,
 
     PLUGINS = {
         'ledserver',
-        --'wsled',
-        'fancy_dots',
+        'redblue',
     },
 
     PIN_REED_SWITCH = nil,

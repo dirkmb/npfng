@@ -1,11 +1,6 @@
 config = require('config')
-wsled = require('wsled')
 wsled_config = require('wsled_config')
 
-function led_func_timer()
-    wsled.writeColorValues()
-    tmr.alarm(2, wsled_config.speed, 0, led_func_timer)
-end
 
 function startServer()
    print("Wifi AP connected. Wicon IP:")
@@ -37,7 +32,6 @@ end
 
 
 local function start()
-    tmr.alarm(2, wsled_config.speed, 0, led_func_timer)
     startServer()
 end
 

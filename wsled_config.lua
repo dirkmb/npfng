@@ -7,6 +7,7 @@ return {
     mode = 2,
     signal_red = 0,
     signal_red_change = 10,
-    speed = 10,
-    length = 4
+    speed = 40,
+    length = 4,
+    dot_count = 1,
 }

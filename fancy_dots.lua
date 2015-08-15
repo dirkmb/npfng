@@ -17,12 +17,15 @@ local colors = {
     }
 
 
+local dot_length = 4
+
 local dots = {
-    {math.random(config.LED_STRIP_LENGTH), math.random(3), colors[1]},
-    {math.random(config.LED_STRIP_LENGTH), math.random(3), colors[2]},
-    {math.random(config.LED_STRIP_LENGTH), math.random(3), colors[3]},
-    {math.random(config.LED_STRIP_LENGTH), -math.random(3), colors[4]},
-    {math.random(config.LED_STRIP_LENGTH), -math.random(3), colors[5]},
+    {math.random(config.LED_STRIP_LENGTH), math.random(3), colors[1], string.char(0,0,0):rep(dot_length)},
+    {math.random(config.LED_STRIP_LENGTH), -math.random(3), colors[2], string.char(0,0,0):rep(dot_length)},
+    {math.random(config.LED_STRIP_LENGTH), math.random(3), colors[3], string.char(0,0,0):rep(dot_length)},
+    {math.random(config.LED_STRIP_LENGTH), math.random(3), colors[4], string.char(0,0,0):rep(dot_length)},
+    {math.random(config.LED_STRIP_LENGTH), -math.random(3), colors[5], string.char(0,0,0):rep(dot_length)},
+    {math.random(config.LED_STRIP_LENGTH), -math.random(3), colors[5], string.char(0,0,0):rep(dot_length)},
 }
 
 local function update_fancy_dots()
@@ -33,7 +36,7 @@ local function update_fancy_dots()
     --
     for id, dot in pairs(dots) do
         -- turn of the old pos
-        ws2812.set_led(dot[1], 0, 0, 0)
+        ws2812.set_leds(dot[1], string.char(0):rep(3*dot_length))
         -- update pos
         dot[1] = dot[1] + dot[2]
         -- draw color
@@ -41,12 +44,20 @@ local function update_fancy_dots()
             dot[1] = 0
             dot[2] = dot[2] * -1
             dot[3] = colors[math.random(5)]
+            dot[4] = ""
+            for i = 1, dot_length do
+                dot[4] = dot[4] .. string.char(dot[3][1]/(2^(dot_length-i+1)), dot[3][2]/(2^(dot_length-i+1)), dot[3][3]/(2^(dot_length-i+1)))
+            end
         elseif dot[1] > config.LED_STRIP_LENGTH then
             dot[1] = config.LED_STRIP_LENGTH
             dot[2] = dot[2] * -1
             dot[3] = colors[math.random(5)]
+            dot[4] = ""
+            for i = 1, dot_length do
+                dot[4] = dot[4] .. string.char(dot[3][1]/(2^(i+1)), dot[3][2]/(2^(i+1)), dot[3][3]/(2^(i+1)))
+            end
         end
-        ws2812.set_led(dot[1], dot[3][1], dot[3][2], dot[3][3])
+        ws2812.set_leds(dot[1], dot[4])
     end
 
     -- update values
@@ -60,7 +71,7 @@ local function led_func_timer()
 end
 
 local function start()
-    ws2812.fill_buffer(string.char(0,0,0):rep(config.LED_STRIP_LENGTH))
+    ws2812.init_buffer(string.char(0,0,0):rep(config.LED_STRIP_LENGTH))
     tmr.alarm(2, wsled_config.speed, 0, led_func_timer)
 end
 

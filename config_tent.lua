@@ -11,7 +11,7 @@ return {
 
     PLUGINS = {
         'ledserver',
-        'redblue',
+        'strobe',
     },
 
     PIN_REED_SWITCH = nil,
